@@ -12,7 +12,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Screen() {
   return (
-    <SafeAreaView className="flex-1 items-center gap-5 p-6 bg-secondary/30">
+    <SafeAreaView className="flex-1 items-center gap-5 p-6 bg-background">
       <Card className="w-full max-w-sm p-6 rounded-2xl">
         <CardHeader className="items-center">
           <View className="p-3">
@@ -20,9 +20,8 @@ export default function Screen() {
           </View>
           <View className="flex-row">
             <CardDescription className="text-base font-semibold">
-              Theme
+              <ThemeToggle />
             </CardDescription>
-            <ThemeToggle />
           </View>
         </CardHeader>
         <CardContent>

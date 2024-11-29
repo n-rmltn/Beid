@@ -10,13 +10,14 @@ import {
 import { SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
-import { Platform } from "react-native";
+import { Platform, View } from "react-native";
 import { NAV_THEME } from "@/lib/constants";
 import { useColorScheme } from "@/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { Text } from "@/components/ui/text";
+import { cn } from "@/lib/utils";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -71,27 +72,27 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-      <Stack
-        screenOptions={{
-          headerBackTitle: "Back",
-          headerTitle(props) {
-            return (
+      <View className={cn("flex-1", isDarkColorScheme && "dark")}>
+        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+        <Stack
+          screenOptions={{
+            headerBackTitle: "Back",
+            headerTitle: (props) => (
               <Text className="text-xl font-semibold">
                 {toOptions(props.children)}
               </Text>
-            );
-          },
-          headerRight: () => <ThemeToggle />,
-        }}>
-        <Stack.Screen
-          name="(tabs)"
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack>
-      <PortalHost />
+            ),
+            headerRight: () => <ThemeToggle />,
+          }}>
+          <Stack.Screen
+            name="(tabs)"
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack>
+        <PortalHost />
+      </View>
     </ThemeProvider>
   );
 }
