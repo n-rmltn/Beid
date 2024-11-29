@@ -1,5 +1,5 @@
 import * as React from "react";
-import { View } from "react-native";
+import { SafeAreaView, View } from "react-native";
 import {
   Card,
   CardContent,
@@ -8,18 +8,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Text } from "@/components/ui/text";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Screen() {
   return (
-    <View className="flex-1 justify-center items-center gap-5 p-6 bg-secondary/30">
+    <SafeAreaView className="flex-1 items-center gap-5 p-6 bg-secondary/30">
       <Card className="w-full max-w-sm p-6 rounded-2xl">
         <CardHeader className="items-center">
-          <View className="p-3" />
-          <CardTitle className="pb-2 text-center">Testing</CardTitle>
+          <View className="p-3">
+            <CardTitle className="pb-2 text-center">Testing</CardTitle>
+          </View>
           <View className="flex-row">
             <CardDescription className="text-base font-semibold">
-              Starter kit
+              Theme
             </CardDescription>
+            <ThemeToggle />
           </View>
         </CardHeader>
         <CardContent>
@@ -39,6 +42,6 @@ export default function Screen() {
           </View>
         </CardContent>
       </Card>
-    </View>
+    </SafeAreaView>
   );
 }

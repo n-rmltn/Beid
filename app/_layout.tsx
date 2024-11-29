@@ -16,6 +16,7 @@ import { useColorScheme } from "@/lib/useColorScheme";
 import { PortalHost } from "@rn-primitives/portal";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
+import { Text } from "@/components/ui/text";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -71,16 +72,39 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-      <Stack>
+      <Stack
+        screenOptions={{
+          headerBackTitle: "Back",
+          headerTitle(props) {
+            return (
+              <Text className="text-xl font-semibold">
+                {toOptions(props.children)}
+              </Text>
+            );
+          },
+          headerRight: () => <ThemeToggle />,
+        }}>
         <Stack.Screen
-          name="index"
+          name="(tabs)"
           options={{
-            title: "Starter Base",
-            headerRight: () => <ThemeToggle />,
+            headerShown: false,
           }}
         />
       </Stack>
       <PortalHost />
     </ThemeProvider>
   );
+}
+
+// Convert case from kebab-case to Title Case.
+function toOptions(name: string) {
+  const title = name
+    .split("-")
+    .map(function (str: string) {
+      return str.replace(/\b\w/g, function (char) {
+        return char.toUpperCase();
+      });
+    })
+    .join(" ");
+  return title;
 }
