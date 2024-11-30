@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router";
 import { Home } from "@/lib/icons/Home";
+import { Banknote } from "@/lib/icons/BankNote";
 
 export default function TabsLayout() {
   return (
@@ -15,11 +16,11 @@ export default function TabsLayout() {
         }}
       />
       <Tabs.Screen
-        name="test"
+        name="transaction"
         options={{
-          title: "Test",
+          title: "Transactions",
           tabBarIcon({ color, size }) {
-            return <Home color={color} size={size} />;
+            return <Banknote color={color} size={size} />;
           },
           headerShown: false,
         }}

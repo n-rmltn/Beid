@@ -24,4 +24,6 @@ export interface Transaction {
   transactionType: TransactionType;
   cardType?: CardType;
   direction: TransactionDirection;
+  from?: string;
+  to?: string;
 }
