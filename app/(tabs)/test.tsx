@@ -7,6 +7,10 @@ import {
   SafeAreaView,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { CreditCard } from "@/lib/icons/Card";
+import { HandCoins } from "@/lib/icons/Coins";
+import { QrCode } from "@/lib/icons/QR";
+import { Gift } from "@/lib/icons/Gift";
 import { useGroupedTransactions } from "@/lib/hooks/useGroupedTransaction";
 import {
   CardType,
@@ -114,12 +118,38 @@ const transactions: Transaction[] = [
   },
 ];
 
-const TransactionItem: React.FC<Transaction> = ({ title, amount, date }) => {
+const getTransactionIcon = (type: TransactionType) => {
+  switch (type) {
+    case TransactionType.QR_PAYMENT:
+      return <QrCode className="text-primary-foreground" strokeWidth={1.25} />;
+    case TransactionType.CARD_PAYMENT:
+      return (
+        <CreditCard className="text-primary-foreground" strokeWidth={1.25} />
+      );
+    case TransactionType.CASHBACK:
+      return <Gift className="text-primary-foreground" strokeWidth={1.25} />;
+    case TransactionType.RECEIVE_FUND:
+      return (
+        <HandCoins className="text-primary-foreground" strokeWidth={1.25} />
+      );
+    default:
+      return null;
+  }
+};
+
+const TransactionItem: React.FC<Transaction> = ({
+  title,
+  amount,
+  date,
+  transactionType,
+  direction,
+}) => {
   const formattedDate = new Date(date).toLocaleDateString();
+
   return (
     <View className="flex-row items-center mb-4">
       <View className="bg-primary p-2 rounded-lg mr-3">
-        {/* TODO: Insert icon based on transaction type */}
+        {getTransactionIcon(transactionType)}
       </View>
       <View className="flex-1">
         <Text className="text-base font-medium text-foreground">{title}</Text>
@@ -127,7 +157,9 @@ const TransactionItem: React.FC<Transaction> = ({ title, amount, date }) => {
       </View>
       <Text
         className={`text-base font-medium ${
-          amount.includes("+") ? "text-green-500" : "text-red-500"
+          direction === TransactionDirection.INCOMING
+            ? "text-green-500"
+            : "text-red-500"
         }`}>
         {amount}
       </Text>
