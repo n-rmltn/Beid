@@ -1,7 +1,5 @@
 import Details from "@/components/Home/Details";
-import { Button } from "@/components/ui/button";
 import { Ionicons } from "@expo/vector-icons";
-import { QrCode } from "@/lib/icons/QR";
 import * as React from "react";
 import {
   RefreshControl,

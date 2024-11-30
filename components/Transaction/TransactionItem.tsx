@@ -43,7 +43,7 @@ export const TransactionItem: React.FC<Transaction> = ({
   const formattedDate = new Date(date).toLocaleDateString();
 
   return (
-    <Link href={`/`} asChild>
+    <Link href={`/transaction/${id}`} asChild>
       <Pressable className="active:opacity-70">
         <View className="flex-row items-center mb-4">
           <View className="bg-primary p-2 rounded-lg mr-3">

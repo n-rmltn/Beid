@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   RefreshControl,
 } from "react-native";
-import { TransactionItem } from "@/components/TransactionItem";
+import { TransactionItem } from "@/components/Transaction/TransactionItem";
 import { useGroupedTransactions } from "@/lib/hooks/useGroupedTransaction";
 import { transactions } from "@/lib/data/transaction";
 

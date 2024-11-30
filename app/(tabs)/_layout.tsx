@@ -1,6 +1,6 @@
 import { Tabs } from "expo-router";
 import { Home } from "@/lib/icons/Home";
-import { Banknote } from "@/lib/icons/BankNote";
+import { Banknote } from "@/lib/icons/Banknote";
 
 export default function TabsLayout() {
   return (
@@ -23,6 +23,17 @@ export default function TabsLayout() {
             return <Banknote color={color} size={size} />;
           },
           headerShown: false,
+        }}
+      />
+      <Tabs.Screen
+        name="transaction/[id]"
+        options={{
+          href: null,
+          title: "Transaction",
+          tabBarIcon({ color, size }) {
+            return <Banknote color={color} size={size} />;
+          },
+          headerShown: true,
         }}
       />
     </Tabs>
