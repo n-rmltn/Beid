@@ -1,14 +1,25 @@
 import { Tabs } from "expo-router";
-import { MoonStar } from "lucide-react-native";
+import { Home } from "@/lib/icons/Home";
 
 export default function TabsLayout() {
   return (
     <Tabs>
       <Tabs.Screen
-        name="index"
+        name="home"
         options={{
+          title: "Home",
           tabBarIcon({ color, size }) {
-            return <MoonStar color={color} size={size} />;
+            return <Home color={color} size={size} />;
+          },
+          headerShown: false,
+        }}
+      />
+      <Tabs.Screen
+        name="test"
+        options={{
+          title: "Test",
+          tabBarIcon({ color, size }) {
+            return <Home color={color} size={size} />;
           },
           headerShown: false,
         }}

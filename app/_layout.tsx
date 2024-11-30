@@ -76,6 +76,7 @@ export default function RootLayout() {
         <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
         <Stack
           screenOptions={{
+            headerShown: false,
             headerBackTitle: "Back",
             headerTitle: (props) => (
               <Text className="text-xl font-semibold">
@@ -84,12 +85,7 @@ export default function RootLayout() {
             ),
             headerRight: () => <ThemeToggle />,
           }}>
-          <Stack.Screen
-            name="(tabs)"
-            options={{
-              headerShown: false,
-            }}
-          />
+          <Stack.Screen name="index" options={{ headerShown: false }} />
         </Stack>
         <PortalHost />
       </View>

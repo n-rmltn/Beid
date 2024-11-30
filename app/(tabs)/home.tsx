@@ -2,7 +2,7 @@ import Details from "@/components/Home/Details";
 import * as React from "react";
 import { RefreshControl, SafeAreaView, ScrollView, View } from "react-native";
 
-export default function Screen() {
+const Home = () => {
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
@@ -25,4 +25,6 @@ export default function Screen() {
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
+
+export default Home;

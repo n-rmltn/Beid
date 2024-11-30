@@ -12,7 +12,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 
 const Details = () => {
   return (
-    <Card className="w-full max-w-sm p-6 rounded-2xl mt-8">
+    <Card className="w-full p-6 m-4 rounded-2xl">
       <CardHeader className="items-center">
         <View className="p-3">
           <CardTitle className="pb-2 text-center">Testing</CardTitle>
