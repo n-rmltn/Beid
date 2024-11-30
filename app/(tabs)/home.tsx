@@ -1,5 +1,6 @@
 import Details from "@/components/Home/Details";
-import { Ionicons } from "@expo/vector-icons";
+import { Eye } from "@/lib/icons/Eye";
+import { EyeClosed } from "@/lib/icons/EyeClose";
 import * as React from "react";
 import {
   RefreshControl,
@@ -9,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import QuickActions from "@/components/QuickActions";
+import QuickActions from "@/components/Home/QuickActions";
 
 const Home = () => {
   const [refreshing, setRefreshing] = React.useState(false);
@@ -46,11 +47,11 @@ const Home = () => {
               {showBalance ? "$5,240.00" : "****"}
             </Text>
             <TouchableOpacity onPress={toggleBalance} className="ml-2">
-              <Ionicons
-                name={showBalance ? "eye-outline" : "eye-off-outline"}
-                size={24}
-                color="white"
-              />
+              {showBalance ? (
+                <Eye className="text-foreground" strokeWidth={1.25} />
+              ) : (
+                <EyeClosed className="text-foreground" strokeWidth={1.25} />
+              )}
             </TouchableOpacity>
           </View>
         </View>

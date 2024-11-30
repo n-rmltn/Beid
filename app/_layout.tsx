@@ -7,7 +7,7 @@ import {
   Theme,
   ThemeProvider,
 } from "@react-navigation/native";
-import { SplashScreen, Stack } from "expo-router";
+import { Slot, SplashScreen, Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { Platform, View } from "react-native";
@@ -74,34 +74,9 @@ export default function RootLayout() {
     <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
       <View className={cn("flex-1", isDarkColorScheme && "dark")}>
         <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-        <Stack
-          screenOptions={{
-            headerShown: false,
-            headerBackTitle: "Back",
-            headerTitle: (props) => (
-              <Text className="text-xl font-semibold">
-                {toOptions(props.children)}
-              </Text>
-            ),
-            headerRight: () => <ThemeToggle />,
-          }}>
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-        </Stack>
+        <Slot />
         <PortalHost />
       </View>
     </ThemeProvider>
   );
-}
-
-// Convert case from kebab-case to Title Case.
-function toOptions(name: string) {
-  const title = name
-    .split("-")
-    .map(function (str: string) {
-      return str.replace(/\b\w/g, function (char) {
-        return char.toUpperCase();
-      });
-    })
-    .join(" ");
-  return title;
 }
