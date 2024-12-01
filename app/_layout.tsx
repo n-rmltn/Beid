@@ -18,6 +18,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { setAndroidNavigationBar } from "@/lib/android-navigation-bar";
 import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
+import { AuthProvider } from "@/lib/context/auth-context";
+import { AuthGuard } from "@/components/AuthGuard";
 
 const LIGHT_THEME: Theme = {
   ...DefaultTheme,
@@ -71,12 +73,16 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-      <View className={cn("flex-1", isDarkColorScheme && "dark")}>
-        <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-        <Slot />
-        <PortalHost />
-      </View>
-    </ThemeProvider>
+    <AuthProvider>
+      <AuthGuard>
+        <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+          <View className={cn("flex-1", isDarkColorScheme && "dark")}>
+            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+            <Slot />
+            <PortalHost />
+          </View>
+        </ThemeProvider>
+      </AuthGuard>
+    </AuthProvider>
   );
 }

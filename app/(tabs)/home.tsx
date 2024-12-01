@@ -3,6 +3,7 @@ import { Eye } from "@/lib/icons/Eye";
 import { EyeClosed } from "@/lib/icons/EyeClose";
 import * as React from "react";
 import {
+  Alert,
   RefreshControl,
   SafeAreaView,
   ScrollView,
@@ -10,11 +11,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import * as LocalAuthentication from "expo-local-authentication";
 import QuickActions from "@/components/Home/QuickActions";
+import { Button } from "@/components/ui/button";
+import { useAuthContext } from "@/lib/context/auth-context";
 
 const Home = () => {
   const [refreshing, setRefreshing] = React.useState(false);
   const [showBalance, setShowBalance] = React.useState(false);
+  const { signOut } = useAuthContext();
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -23,8 +28,24 @@ const Home = () => {
     }, 2000);
   }, []);
 
-  const toggleBalance = () => {
-    setShowBalance(!showBalance);
+  const toggleBalance = async () => {
+    if (showBalance) {
+      setShowBalance(false);
+      return;
+    }
+
+    try {
+      const result = await LocalAuthentication.authenticateAsync({
+        promptMessage: "Authenticate to view balance",
+        fallbackLabel: "Use passcode",
+      });
+
+      if (result.success) {
+        setShowBalance(true);
+      }
+    } catch (error) {
+      Alert.alert("Error", "Authentication failed");
+    }
   };
 
   return (
@@ -59,6 +80,10 @@ const Home = () => {
         <QuickActions />
 
         <Details />
+
+        <Button variant={"destructive"} onPress={signOut}>
+          <Text className="text-foreground">Sign Out</Text>
+        </Button>
       </ScrollView>
     </SafeAreaView>
   );
