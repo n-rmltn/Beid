@@ -1,20 +1,44 @@
 import React from "react";
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
-import { useLocalSearchParams, useRouter, Link } from "expo-router";
-import { Transaction } from "@/lib/types/transaction";
+import { useLocalSearchParams, Link } from "expo-router";
 import { getTransactionIcon } from "@/components/Transaction/TransactionItem";
 import { Button } from "@/components/ui/button";
 import { DetailItem } from "@/components/Transaction/DetailItem";
-import { transactions } from "@/lib/data/transaction";
+import { Database } from "@/lib/types/supabase";
+import { supabase } from "@/lib/supabase/supabase";
 
-// Mock data
-const getTransactionById = (id: string): Transaction | undefined => {
-  return transactions.find((transaction) => transaction.id === parseInt(id));
-};
+type Transaction = Database["public"]["Tables"]["transactions"]["Row"];
 
 export default function TransactionDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const transaction = getTransactionById(id);
+  const [transaction, setTransaction] = React.useState<Transaction | null>(
+    null
+  );
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  const fetchTransaction = async () => {
+    setIsLoading(true);
+    setTransaction(null);
+
+    let { data, error } = await supabase
+      .from("transactions")
+      .select("*")
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      console.log(error);
+    }
+
+    if (data) {
+      setTransaction(data);
+    }
+    setIsLoading(false);
+  };
+
+  React.useEffect(() => {
+    fetchTransaction();
+  }, [id]);
 
   if (!id) {
     return (
@@ -22,6 +46,16 @@ export default function TransactionDetailScreen() {
         <Text className="text-lg text-red-500 text-center mt-5">
           Invalid transaction ID
         </Text>
+      </SafeAreaView>
+    );
+  }
+
+  if (isLoading) {
+    return (
+      <SafeAreaView className="flex-1 bg-background">
+        <View className="flex-1 items-center justify-center">
+          <Text className="text-foreground">Loading transaction...</Text>
+        </View>
       </SafeAreaView>
     );
   }
@@ -43,7 +77,7 @@ export default function TransactionDetailScreen() {
       <ScrollView>
         <View className="items-center p-5 bg-card">
           <View className="bg-primary p-4 rounded-xl mb-3">
-            {getTransactionIcon(transaction.transactionType)}
+            {getTransactionIcon(transaction.transaction_type)}
           </View>
           <Text className="text-2xl font-bold text-foreground">
             {transaction.title}
@@ -53,19 +87,21 @@ export default function TransactionDetailScreen() {
         <View className="bg-card m-4 p-5 rounded-lg">
           <DetailItem label="Amount" value={transaction.amount} />
           <DetailItem label="Date" value={formattedDate} />
-          <DetailItem label="Type" value={transaction.transactionType} />
-          {transaction.cardType && (
-            <DetailItem label="Card Type" value={transaction.cardType} />
+          <DetailItem label="Type" value={transaction.transaction_type} />
+          {transaction.card_type && (
+            <DetailItem label="Card Type" value={transaction.card_type} />
           )}
           <DetailItem label="Direction" value={transaction.direction} />
-          {transaction.from && (
-            <DetailItem label="From" value={transaction.from} />
+          {transaction.source && (
+            <DetailItem label="From" value={transaction.source} />
           )}
-          {transaction.to && <DetailItem label="To" value={transaction.to} />}
-          {transaction.recipientReference && (
+          {transaction.destination && (
+            <DetailItem label="To" value={transaction.destination} />
+          )}
+          {transaction.recipient_reference && (
             <DetailItem
               label="Reference"
-              value={transaction.recipientReference}
+              value={transaction.recipient_reference}
             />
           )}
         </View>

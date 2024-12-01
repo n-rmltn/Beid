@@ -31,6 +31,28 @@ In the output, you'll find options to open the app in a
 
 - The `onRefresh` function in the app simulates data fetching with a 2-second timeout. In a production environment, this would be replaced with actual API calls to fetch fresh data during pull-to-refresh actions.
 
+## Supabase
+
+1. Create a Supabase project at [supabase.com](https://supabase.com)
+
+2. Set up environment variables:
+
+   ```bash
+   cp .env.example .env.local
+   ```
+
+3. Fill in your Supabase credentials in `.env.local`:
+   - `EXPO_PUBLIC_SUPABASE_URL`: Your project URL
+   - `EXPO_PUBLIC_SUPABASE_ANON_KEY`: Your project's anon/public key
+
+These values can be found in the Supabase project settings under API section.
+
+## Supabase Setup
+
+The SQL schema and initial data setup can be found in `/lib/supabase/supabase.sql` and `lib/supabase/supabase.csv`. This file contains all necessary database configurations and seed data.
+
+> **Note:** The current Row Level Security (RLS) configuration allows public access to view all transactions. In a production environment, RLS policies should be properly configured to restrict users to only view transactions associated with their own user ID for enhanced security and data privacy.
+
 ## P.S.
 
 While I learned Expo in just 3 days, the transition felt natural due to its similarities with Next.js. The framework's structure and development patterns seems similar and align well with Next.js concepts.
