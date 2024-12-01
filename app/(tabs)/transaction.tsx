@@ -8,18 +8,51 @@ import {
 } from "react-native";
 import { TransactionItem } from "@/components/Transaction/TransactionItem";
 import { useGroupedTransactions } from "@/lib/hooks/useGroupedTransaction";
-import { transactions } from "@/lib/data/transaction";
+import { supabase } from "@/lib/supabase/supabase";
+import { Database } from "@/lib/types/supabase";
+
+type Transaction = Database["public"]["Tables"]["transactions"]["Row"];
 
 export default function Transactions() {
   const [refreshing, setRefreshing] = React.useState(false);
+  const [transactions, setTransactions] = React.useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
   const groupedTransactions = useGroupedTransactions(transactions);
+
+  const fetchTransactions = async () => {
+    let { data, error } = await supabase.from("transactions").select("*");
+
+    if (error) {
+      console.log(error);
+    }
+
+    if (data) {
+      setTransactions(data);
+    }
+    setIsLoading(false);
+  };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     setTimeout(() => {
+      fetchTransactions();
       setRefreshing(false);
     }, 2000);
   }, []);
+
+  React.useEffect(() => {
+    fetchTransactions();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <SafeAreaView className="flex-1 bg-background">
+        <View className="flex-1 items-center justify-center">
+          <Text className="text-foreground">Loading transactions...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="flex-1 bg-background">

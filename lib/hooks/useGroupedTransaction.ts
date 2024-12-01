@@ -1,5 +1,7 @@
 import { useMemo } from "react";
-import { Transaction } from "@/lib/types/transaction";
+import { Database } from "../types/supabase";
+
+type Transaction = Database["public"]["Tables"]["transactions"]["Row"];
 
 /**
  * Groups an array of transactions by month and year.

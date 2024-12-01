@@ -4,24 +4,23 @@ import { CreditCard } from "@/lib/icons/Card";
 import { HandCoins } from "@/lib/icons/Coins";
 import { QrCode } from "@/lib/icons/QR";
 import { Gift } from "@/lib/icons/Gift";
-import {
-  Transaction,
-  TransactionDirection,
-  TransactionType,
-} from "@/lib/types/transaction";
 import { Link } from "expo-router";
+import { Database } from "@/lib/types/supabase";
+
+type Transaction = Database["public"]["Tables"]["transactions"]["Row"];
+type TransactionType = Database["public"]["Enums"]["transaction_type"];
 
 export const getTransactionIcon = (type: TransactionType) => {
   switch (type) {
-    case TransactionType.QR_PAYMENT:
+    case "QR_PAYMENT":
       return <QrCode className="text-primary-foreground" strokeWidth={1.25} />;
-    case TransactionType.CARD_PAYMENT:
+    case "CARD_PAYMENT":
       return (
         <CreditCard className="text-primary-foreground" strokeWidth={1.25} />
       );
-    case TransactionType.CASHBACK:
+    case "CASHBACK":
       return <Gift className="text-primary-foreground" strokeWidth={1.25} />;
-    case TransactionType.RECEIVE_FUND:
+    case "RECEIVE_FUND":
       return (
         <HandCoins className="text-primary-foreground" strokeWidth={1.25} />
       );
@@ -35,10 +34,10 @@ export const TransactionItem: React.FC<Transaction> = ({
   title,
   amount,
   date,
-  transactionType,
+  transaction_type,
   direction,
-  to,
-  from,
+  source,
+  destination,
 }) => {
   const formattedDate = new Date(date).toLocaleDateString();
 
@@ -47,7 +46,7 @@ export const TransactionItem: React.FC<Transaction> = ({
       <Pressable className="active:opacity-70">
         <View className="flex-row items-center mb-4">
           <View className="bg-primary p-2 rounded-lg mr-3">
-            {getTransactionIcon(transactionType)}
+            {getTransactionIcon(transaction_type)}
           </View>
           <View className="flex-1">
             <Text className="text-base font-medium text-foreground">
@@ -57,18 +56,16 @@ export const TransactionItem: React.FC<Transaction> = ({
               {formattedDate}
             </Text>
             <Text className="text-xs text-muted-foreground">
-              {direction === TransactionDirection.INCOMING
-                ? `From: ${from}`
-                : `To: ${to}`}
+              {direction === "INCOMING"
+                ? `From: ${source}`
+                : `To: ${destination}`}
             </Text>
           </View>
           <Text
             className={`text-base font-medium ${
-              direction === TransactionDirection.INCOMING
-                ? "text-green-500"
-                : "text-red-500"
+              direction === "INCOMING" ? "text-green-500" : "text-red-500"
             }`}>
-            {amount}
+            RM{amount.toFixed(2)}
           </Text>
         </View>
       </Pressable>
