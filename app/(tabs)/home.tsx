@@ -35,16 +35,32 @@ const Home = () => {
     }
 
     try {
+      const compatible = await LocalAuthentication.hasHardwareAsync();
+      const enrolled = await LocalAuthentication.isEnrolledAsync();
+
+      if (!compatible || !enrolled) {
+        Alert.alert(
+          "Error",
+          "Biometric authentication is not available on this device"
+        );
+        return;
+      }
+
       const result = await LocalAuthentication.authenticateAsync({
         promptMessage: "Authenticate to view balance",
         fallbackLabel: "Use passcode",
+        disableDeviceFallback: false,
       });
 
       if (result.success) {
         setShowBalance(true);
+      } else if (result.error) {
+        Alert.alert("Error", `Authentication failed: ${result.error}`);
       }
     } catch (error) {
-      Alert.alert("Error", "Authentication failed");
+      const message =
+        error instanceof Error ? error.message : "Authentication failed";
+      Alert.alert("Error", message);
     }
   };
 

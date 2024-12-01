@@ -16,6 +16,16 @@ export default function TransactionDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const transaction = getTransactionById(id);
 
+  if (!id) {
+    return (
+      <SafeAreaView className="flex-1 bg-background">
+        <Text className="text-lg text-red-500 text-center mt-5">
+          Invalid transaction ID
+        </Text>
+      </SafeAreaView>
+    );
+  }
+
   if (!transaction) {
     return (
       <SafeAreaView className="flex-1 bg-background">

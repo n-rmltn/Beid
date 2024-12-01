@@ -12,16 +12,33 @@ export function useAuth() {
   };
 
   const handleLogout = async () => {
-    await AsyncStorage.removeItem("isAuthenticated");
-    setIsAuthenticated(false);
-    router.replace("/");
+    try {
+      await AsyncStorage.removeItem("isAuthenticated");
+      setIsAuthenticated(false);
+      router.replace("/");
+    } catch (error) {
+      Alert.alert("Error", "Failed to log out. Please try again.");
+    }
   };
 
   const handleAuthentication = async () => {
     try {
+      // hardware check
+      const compatible = await LocalAuthentication.hasHardwareAsync();
+      if (!compatible) {
+        throw new Error("Device does not support biometric authentication");
+      }
+
+      // biometric check
+      const enrolled = await LocalAuthentication.isEnrolledAsync();
+      if (!enrolled) {
+        throw new Error("No biometrics enrolled on this device");
+      }
+
       const result = await LocalAuthentication.authenticateAsync({
         promptMessage: "Authenticate with Face ID",
         fallbackLabel: "Use passcode",
+        disableDeviceFallback: false,
       });
 
       if (result.success) {
@@ -31,9 +48,15 @@ export function useAuth() {
         return true;
       }
 
+      if (result.error) {
+        throw new Error(result.error);
+      }
+
       return false;
     } catch (error) {
-      Alert.alert("Error", "Authentication failed");
+      const message =
+        error instanceof Error ? error.message : "Authentication failed";
+      Alert.alert("Error", message);
       return false;
     }
   };
