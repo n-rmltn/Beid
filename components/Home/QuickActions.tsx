@@ -11,7 +11,7 @@ const actions = [
 export default function QuickActions() {
   return (
     <View className="w-full max-w-sm bg-card rounded-3xl p-6 shadow-lg">
-      <Text className="text-card-foreground text-lg font-semibold mb-4">
+      <Text className="text-card-foreground text-center text-lg font-semibold mb-4">
         Quick Actions
       </Text>
       <View className="flex-row justify-between">

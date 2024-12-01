@@ -1,34 +1,19 @@
 import React from "react";
 import { View, Text, ScrollView, SafeAreaView } from "react-native";
 import { useLocalSearchParams, useRouter, Link } from "expo-router";
-import {
-  Transaction,
-  TransactionType,
-  TransactionDirection,
-  CardType,
-} from "@/lib/types/transaction";
+import { Transaction } from "@/lib/types/transaction";
 import { getTransactionIcon } from "@/components/Transaction/TransactionItem";
 import { Button } from "@/components/ui/button";
+import { DetailItem } from "@/components/Transaction/DetailItem";
+import { transactions } from "@/lib/data/transaction";
 
 // Mock data
 const getTransactionById = (id: string): Transaction | undefined => {
-  const mockTransaction: Transaction = {
-    id: parseInt(id),
-    title: "Coffee Shop Purchase",
-    amount: "$4.50",
-    date: "2023-06-15T10:30:00Z",
-    recipientReference: "Order #1234",
-    transactionType: TransactionType.CARD_PAYMENT,
-    cardType: CardType.DEBIT,
-    direction: TransactionDirection.OUTGOING,
-    to: "Starbucks",
-  };
-  return mockTransaction;
+  return transactions.find((transaction) => transaction.id === parseInt(id));
 };
 
 export default function TransactionDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const router = useRouter();
   const transaction = getTransactionById(id);
 
   if (!transaction) {
@@ -88,25 +73,3 @@ export default function TransactionDetailScreen() {
     </SafeAreaView>
   );
 }
-
-const DetailItem: React.FC<{ label: string; value: string }> = ({
-  label,
-  value,
-}) => (
-  <View className="flex-row justify-between py-2 border-b border-muted">
-    <Text className="text-base text-muted-foreground">{label}:</Text>
-    <Text className="text-base font-medium text-foreground">
-      {toTitleCase(value)}
-    </Text>
-  </View>
-);
-
-const toTitleCase = (str: string): string => {
-  if (str !== str.toUpperCase()) return str;
-
-  return str
-    .toLowerCase()
-    .split("_")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-};
