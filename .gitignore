@@ -1,0 +1,70 @@
+# .NET build output
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.dll
+*.exe
+*.pdb
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# User-specific files
+*.user
+*.userosscache
+*.sln.docstates
+
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Rider
+.idea/
+*.sln.iml
+
+# Visual Studio for Mac
+.vscode/
+*.userprefs
+
+# NuGet
+*.nuget.props
+*.nuget.targets
+packages/
+*.nupkg
+*.snupkg
+
+# Test Results
+TestResults/
+
+# Entity Framework
+*.dbmdl
+*.jfm
+*.pfx
+*.publishsettings
+
+# Environment files
+*.env
+appsettings.Development.json
+appsettings.Local.json
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
