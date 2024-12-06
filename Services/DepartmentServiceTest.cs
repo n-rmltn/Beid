@@ -3,6 +3,7 @@ using Aries.Repositories.Interfaces;
 using Aries.Services.Implementations;
 using Moq;
 using Microsoft.Extensions.Logging;
+using Aries.Models.Entities;
 
 namespace AriesTest.Services
 {
@@ -42,6 +43,32 @@ namespace AriesTest.Services
             Assert.NotNull(result);
             Assert.Equal(2, result.Count());
             _mockDepartmentRepository.Verify(repo => repo.GetDepartmentsAsync(), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_ShouldReturnDepartment_WhenIdExists()
+        {
+            // Mock data
+            var department = new Department { Id = 1, Name = "HR" };
+            _mockDepartmentRepository.Setup(repo => repo.GetByIdAsync(1))
+                .ReturnsAsync(department);
+
+            var result = await _departmentService.GetByIdAsync(1);
+
+            // Should have HR department and call GetByIdAsync once
+            Assert.NotNull(result);
+            Assert.Equal(1, result.Id);
+            Assert.Equal("HR", result.Name);
+            _mockDepartmentRepository.Verify(repo => repo.GetByIdAsync(1), Times.Once);
+        }
+
+        [Fact]
+        public async Task GetByIdAsync_ShouldReturnFalse_WhenIdNotExist()
+        {
+            var result = await _departmentService.GetByIdAsync(1);
+
+            Assert.Null(result);
+            _mockDepartmentRepository.Verify(repo => repo.GetByIdAsync(1), Times.Once);
         }
     }
 }
