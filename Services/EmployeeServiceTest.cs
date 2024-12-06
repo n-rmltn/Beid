@@ -8,6 +8,7 @@ namespace AriesTest.Services
     /**
      *  Tests for employee service
      *  Using Moq to avoid using actual database
+     *  Test by creating mock object, call the service method and verify the result
      */
     public class EmployeeServiceTests
     {
